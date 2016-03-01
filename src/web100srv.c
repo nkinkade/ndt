@@ -345,6 +345,9 @@ void cleanup(int signo) {
         case TEST_S2C_EXT:
           sigsafe_debug_log(6, signo, "Received SIGALRM signal [Extended S2C throughput test]");
           break;
+        case TEST_S2C_SLOW:
+          sigsafe_debug_log(6, signo, "Received SIGALRM signal [Slow S2C throughput test]");
+          break;
         case TEST_SFW:
           sigsafe_debug_log(6, signo, "Received SIGALRM signal [Simple firewall test]");
           break;
@@ -759,6 +762,9 @@ int run_test(tcp_stat_agent *agent, Connection *ctl, TestOptions *testopt,
   }
   if (testopt->s2cextopt) {
     log_println(1, " > Extended S2C throughput test");
+  }
+  if (testopt->s2cslowopt) {
+    log_println(1, " > Slow S2C throughput test");
   }
   if (testopt->metaopt) {
     log_println(1, " > META test");
@@ -1493,6 +1499,7 @@ void child_process(int parent_pipe, SSL_CTX *ssl_context, int ctlsockfd) {
   if (t_opts & TEST_META) testopt.metaopt = TOPT_ENABLED;
   if (t_opts & TEST_C2S) testopt.c2sopt = TOPT_ENABLED;
   if (t_opts & TEST_S2C) testopt.s2copt = TOPT_ENABLED;
+  if (t_opts & TEST_S2C_SLOW) testopt.s2cslowopt = TOPT_ENABLED;
   if (global_extended_tests_allowed && t_opts & TEST_C2S_EXT) {
     testopt.c2sextopt = TOPT_ENABLED;
     alarm_time += options.c2s_duration / 1000.0;

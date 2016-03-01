@@ -174,7 +174,7 @@ int test_s2c(Connection *ctl, tcp_stat_agent *agent, TestOptions *testOptions,
 
   // Determine port to be used. Compute based on options set earlier
   // by reading from config file, or use default port2 (3003)
-  if ((!extended && testOptions->s2copt) || (extended && testOptions->s2cextopt)) {
+  if ((!extended && (testOptions->s2copt || testOptions->s2cslowopt) || (extended && testOptions->s2cextopt)) {
     if (extended)
       setCurrentTest(TEST_S2C_EXT);
     else
@@ -553,6 +553,11 @@ int test_s2c(Connection *ctl, tcp_stat_agent *agent, TestOptions *testOptions,
               drainingqueuecount++;
               continue;
             }
+          }
+
+          // If this is a "slow" test, then pause for a bit
+          if (testOptions->s2cslowopt) {
+            mysleep(0.5);
           }
 
           n = writen_any(&xmitsfd[0], buff, RECLTH);

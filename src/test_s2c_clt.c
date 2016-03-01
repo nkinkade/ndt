@@ -87,7 +87,7 @@ int test_s2c_clt(int ctlSocket, char tests, char* host, int conn_options,
     streams[i].inSocket = 0;
   }
 
-  if (((tests & TEST_S2C) && !extended) || ((tests & TEST_S2C_EXT) && extended)) {
+  if (((tests & (TEST_S2C || TEST_S2C_SLOW)) && !extended) || ((tests & TEST_S2C_EXT) && extended)) {
     if (extended)
       setCurrentTest(TEST_S2C_EXT);
     else

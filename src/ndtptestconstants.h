@@ -16,6 +16,7 @@
 #define TEST_META (1L << 5)
 #define TEST_C2S_EXT (1L << 6)
 #define TEST_S2C_EXT (1L << 7)
+#define TEST_S2C_SLOW (1L << 8)
 
 // will hold "string "middlebox", which is the longest name
 #define TEST_NAME_DESC_SIZE 10
@@ -51,7 +52,7 @@ enum TEST_STATUS_INT {
 
 // Test IDs
 enum TEST_ID {
-  NONE, MIDDLEBOX, SFW, C2S, S2C, META, C2S_EXT, S2C_EXT
+  NONE, MIDDLEBOX, SFW, C2S, S2C, META, C2S_EXT, S2C_EXT, S2C_SLOW
 } testid;
 
 // Transmission direction

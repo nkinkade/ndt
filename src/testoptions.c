@@ -366,7 +366,7 @@ int initialize_tests(Connection *ctl, TestOptions *options, char *buff,
   // set_protologfile(get_remotehost(), protologlocalarr);
 
   if (!(useropt
-        & (TEST_MID | TEST_C2S | TEST_S2C | TEST_SFW | TEST_STATUS | TEST_META | TEST_C2S_EXT | TEST_S2C_EXT))) {
+        & (TEST_MID | TEST_C2S | TEST_S2C | TEST_SFW | TEST_STATUS | TEST_META | TEST_C2S_EXT | TEST_S2C_EXT | TEST_S2C_SLOW))) {
     // message received does not indicate a valid test!
     send_json_message_any(ctl, MSG_ERROR, invalid_test_suite,
                           strlen(invalid_test_suite), options->connection_flags,
@@ -391,6 +391,8 @@ int initialize_tests(Connection *ctl, TestOptions *options, char *buff,
     add_test_to_suite(&first, buff, buff_strlen, TEST_S2C_EXT);
   } else if (useropt & TEST_S2C) {
     add_test_to_suite(&first, buff, buff_strlen, TEST_S2C);
+  } else if (useropt & TEST_S2C_SLOW) {
+    add_test_to_suite(&first, buff, buff_strlen, TEST_S2C_SLOW);
   }
   if (useropt & TEST_META) {
     add_test_to_suite(&first, buff, buff_strlen, TEST_META);
