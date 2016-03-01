@@ -15,8 +15,8 @@
 #define TEST_STATUS (1L << 4)
 #define TEST_META (1L << 5)
 #define TEST_C2S_EXT (1L << 6)
-#define TEST_S2C_EXT (1L << 7)
-#define TEST_S2C_SLOW (1L << 8)
+#define TEST_S2C_EXT 0
+#define TEST_S2C_SLOW (1L << 7)
 
 // will hold "string "middlebox", which is the longest name
 #define TEST_NAME_DESC_SIZE 10

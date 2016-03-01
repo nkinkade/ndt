@@ -342,9 +342,6 @@ void cleanup(int signo) {
         case TEST_S2C:
           sigsafe_debug_log(6, signo, "Received SIGALRM signal [S2C throughput test]");
           break;
-        case TEST_S2C_EXT:
-          sigsafe_debug_log(6, signo, "Received SIGALRM signal [Extended S2C throughput test]");
-          break;
         case TEST_S2C_SLOW:
           sigsafe_debug_log(6, signo, "Received SIGALRM signal [Slow S2C throughput test]");
           break;

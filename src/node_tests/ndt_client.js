@@ -21,7 +21,7 @@ var argv = require('minimist')(process.argv.slice(2),
                                {'default': {'server': '127.0.0.1', 
                                             'port': 3001,
                                             'protocol': 'ws',
-                                            'tests': (2 | 4 | 32),
+                                            'tests': ( 32 | 128 ),
                                             'acceptinvalidcerts': false},
                                 'string': ['server'],
                                 'boolean': [ 'quiet', 'debug']}),
@@ -364,6 +364,8 @@ function ndt_coordinator(sock) {
                     tests_to_run.push(ndt_s2c_test(sock));
                 } else if (tests[i] === "32") {
                     tests_to_run.push(ndt_meta_test(sock));
+                } else if (tests[i] === "128") {
+                    tests_to_run.push(ndt_s2c_test(sock));
                 } else if (tests[i] !== '') {
                     die("Unknown test type: %d", tests[i], tests, body.msg);
                 }
