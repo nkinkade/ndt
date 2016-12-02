@@ -67,12 +67,8 @@ function startTest(evt) {
   evt.preventDefault();
   createBackend();
   if (!isPluginLoaded()) {
-    $('#warning-plugin').show();
     return;
   }
-  $('#warning-plugin').hide();
-  $('#javaButton').attr('disabled', true);
-  $('#websocketButton').attr('disabled', true);
   showPage('test', resetGauges);
   $('#rttValue').html('');
   if (simulate) return simulateTest();
@@ -218,7 +214,6 @@ function setPhase(phase) {
       $('#jitter').html(printJitter(false));
       $('#test-details').html(testDetails());
       $('#test-advanced').append(testDiagnosis());
-      $('#javaButton').attr('disabled', false);
 
       showPage('results');
       break;
@@ -348,7 +343,7 @@ function updateGaugeValue() {
   }
 }
 
-// TESTING JAVA/WEBSOCKET CLIENT
+// TESTING WEBSOCKET CLIENT
 
 function testNDT() {
   if (websocket_client) {
@@ -556,29 +551,10 @@ function testDetails() {
   return d;
 }
 
-// BACKEND METHODS
-function useJavaAsBackend() {
-  $('#warning-websocket').hide();
-  $('#rtt').show();
-  $('#rttValue').show();
-
-  $('.warning-environment').innerHTML = '';
-
-  use_websocket_client = false;
-
-  $('#websocketButton').removeClass('active');
-  $('#javaButton').addClass('active');
-}
-
 function useWebsocketAsBackend() {
   $('#rtt').hide();
   $('#rttValue').hide();
-  $('#warning-websocket').show();
-
   use_websocket_client = true;
-
-  $('#javaButton').removeClass('active');
-  $('#websocketButton').addClass('active');
 }
 
 function createBackend() {
@@ -617,19 +593,8 @@ function isPluginLoaded() {
 }
 
 function checkInstalledPlugins() {
-  var hasJava = false;
   var hasWebsockets = false;
 
-  $('#warning-plugin').hide();
-  $('#warning-websocket').hide();
-
-  hasJava = true;
-  if (typeof deployJava !== 'undefined') {
-    if (deployJava.getJREs() == '') {
-      hasJava = false;
-    }
-  }
-  hasWebsockets = false;
   try {
     var ndt_js = new NDTjs();
     if (ndt_js.checkBrowserSupport()) {
@@ -639,19 +604,14 @@ function checkInstalledPlugins() {
     hasWebsockets = false;
   }
 
-  if (!hasWebsockets) {
-    $('#websocketButton').attr('disabled', true);
-  }
-
-  if (!hasJava) {
-    $('#javaButton').attr('disabled', true);
-  }
-
   if (hasWebsockets) {
     useWebsocketAsBackend();
   }
-  else if (hasJava) {
-    useJavaAsBackend();
+  else {
+    $('#no-websocket').show()
+    $('#startButton').attr('pointer-events', 'none');
+    $('#startButton').css('background-color', '#4d4d4d');
+    $('#startButton').css('cursor', 'default');
   }
 }
 
