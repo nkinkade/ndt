@@ -8,8 +8,9 @@ $(function(){
     setTimeout(initializeTest, 1000);
     return;
   }
-  checkInstalledPlugins();
-  initializeTest();
+  if ( checkInstalledPlugins() ) {
+    initializeTest();
+  }
 });
 
 // CONSTANTS
@@ -25,7 +26,7 @@ var PHASE_RESULTS   = 5;
 
 
 // STATUS VARIABLES
-var use_websocket_client = false;
+var use_websocket_client = true;
 var websocket_client = null;
 var currentPhase = PHASE_LOADING;
 var currentPage = 'welcome';
@@ -66,8 +67,10 @@ function startTest(evt) {
   evt.stopPropagation();
   evt.preventDefault();
   createBackend();
-  if (!isPluginLoaded()) {
-    return;
+  try {
+    testStatus();
+  } catch(e) {
+    return false;
   }
   showPage('test', resetGauges);
   $('#rttValue').html('');
@@ -563,16 +566,6 @@ function createBackend() {
   if (use_websocket_client) {
     websocket_client = new NDTWrapper(window.ndtServer);
   }
-  else {
-    var app = document.createElement('applet');
-    app.id = 'NDT';
-    app.name = 'NDT';
-    app.archive = 'Tcpbw100.jar';
-    app.code = 'edu.internet2.ndt.Tcpbw100.class';
-    app.width = '600';
-    app.height = '10';
-    $('#backendContainer').append(app);
-  }
 }
 
 // UTILITIES
@@ -583,18 +576,9 @@ function debug(message) {
   }
 }
 
-function isPluginLoaded() {
-  try {
-    testStatus();
-    return true;
-  } catch(e) {
-    return false;
-  }
-}
 
 function checkInstalledPlugins() {
   var hasWebsockets = false;
-
   try {
     var ndt_js = new NDTjs();
     if (ndt_js.checkBrowserSupport()) {
@@ -603,16 +587,13 @@ function checkInstalledPlugins() {
   } catch(e) {
     hasWebsockets = false;
   }
-
   if (hasWebsockets) {
     useWebsocketAsBackend();
   }
   else {
     $('#no-websocket').show()
-    $('#startButton').attr('pointer-events', 'none');
-    $('#startButton').css('background-color', '#4d4d4d');
-    $('#startButton').css('cursor', 'default');
   }
+  return hasWebsockets;
 }
 
 // Attempts to determine the absolute path of a script, minus the name of the
