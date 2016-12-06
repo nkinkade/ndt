@@ -26,7 +26,6 @@ var PHASE_RESULTS   = 5;
 
 
 // STATUS VARIABLES
-var use_websocket_client = true;
 var websocket_client = null;
 var currentPhase = PHASE_LOADING;
 var currentPage = 'welcome';
@@ -554,18 +553,9 @@ function testDetails() {
   return d;
 }
 
-function useWebsocketAsBackend() {
-  $('#rtt').hide();
-  $('#rttValue').hide();
-  use_websocket_client = true;
-}
-
 function createBackend() {
   $('#backendContainer').empty();
-
-  if (use_websocket_client) {
-    websocket_client = new NDTWrapper(window.ndtServer);
-  }
+  websocket_client = new NDTWrapper(window.ndtServer);
 }
 
 // UTILITIES
@@ -588,7 +578,8 @@ function checkInstalledPlugins() {
     hasWebsockets = false;
   }
   if (hasWebsockets) {
-    useWebsocketAsBackend();
+    $('#rtt').hide();
+    $('#rttValue').hide();
   }
   else {
     $('#no-websocket').show()
