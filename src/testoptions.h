@@ -49,6 +49,7 @@ typedef struct testoptions {
   int metaopt;  // meta test to be perfomed?
   int c2sextopt; // extended C2S test to be performed?
   int s2cextopt; // extended S2C test to be performed?
+  int s2cslowopt; // slow S2C test to be performed?
 } TestOptions;
 
 // Snap log characteristics

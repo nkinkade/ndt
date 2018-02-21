@@ -106,8 +106,8 @@ char *get_currenttestdesc() {
     case TEST_C2S_EXT:
       currenttestId = C2S_EXT;
       break;
-    case TEST_S2C_EXT:
-      currenttestId = S2C_EXT;
+    case TEST_S2C_SLOW:
+      currenttestId = S2C_SLOW;
       break;
     case TEST_NONE:
     default:

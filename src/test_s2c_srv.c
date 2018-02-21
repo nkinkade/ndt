@@ -158,7 +158,7 @@ int test_s2c(Connection *ctl, tcp_stat_agent *agent, TestOptions *testOptions,
 
   // variables used for protocol validation logs
   enum TEST_STATUS_INT teststatuses = TEST_NOT_STARTED;
-  enum TEST_ID testids = extended ? S2C_EXT : S2C;
+  enum TEST_ID testids = S2C;
   char snaplogsuffix[256] = "s2c_snaplog";
 
   int packet_trace_running = 0;
@@ -178,11 +178,8 @@ int test_s2c(Connection *ctl, tcp_stat_agent *agent, TestOptions *testOptions,
 
   // Determine port to be used. Compute based on options set earlier
   // by reading from config file, or use default port2 (3003)
-  if ((!extended && testOptions->s2copt) || (extended && testOptions->s2cextopt)) {
-    if (extended)
-      setCurrentTest(TEST_S2C_EXT);
-    else
-      setCurrentTest(TEST_S2C);
+  if (!extended && (testOptions->s2copt || testOptions->s2cslowopt)) {
+    setCurrentTest(TEST_S2C);
     log_println(1, " <-- %d - S2C throughput test -->",
                 testOptions->child0);
 
@@ -571,6 +568,11 @@ int test_s2c(Connection *ctl, tcp_stat_agent *agent, TestOptions *testOptions,
               drainingqueuecount++;
               continue;
             }
+          }
+
+          // If this is a "slow" test, then pause for a bit
+          if (testOptions->s2cslowopt) {
+            mysleep(1);
           }
 
           n = writen_any(&xmitsfd[0], buff, RECLTH);
